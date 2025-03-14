@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <div class="h-screen flex flex-col items-center justify-center bg-blue-100">
+        <header class="bg-white w-full shadow-md sticky top-0 z-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row md:justify-between md:items-center py-2">
+                    <div class="flex items-center">
+                        <a href="index.html" class="text-slate-800 hover:text-slate-900 font-bold text-lg">Library Management System</a>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <a href="index.html" class="border-y text-slate-700 font-semibold py-2 px-4 rounded-lg text-sm">Dashboard</a>
+                        <a href="manage_users.html" class="text-slate-700 font-semibold py-2 px-4 rounded-lg text-sm">Manage Users</a>
+                        <a href="manage_books.html" class="text-slate-700 font-semibold py-2 px-4 rounded-lg text-sm">Manage Books</a>
+                        <a href="#" class=" text-slate-700 font-semibold py-2 px-4 rounded-lg text-sm">
+                            <img src="../images/bell.svg" alt="bell" class="h-5">
+                        </a>
+                        <a href="#" class=" text-slate-700 font-semibold py-2 px-4 rounded-lg text-sm">
+                            <img src="../images/user.svg" alt="bell" class="h-7 w-7 rounded-full border bg-slate-300">
+                        </a>
+                        <a href="../logout.php" class="bg-slate-700 hover:bg-slate-900 text-white font-bold py-2 px-4 rounded-lg text-xs">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex items-center justify-center">
+            <div class="bg-white p-4 rounded-lg shadow-md w-full max-w-sm text-center">
+                <h1 class="text-2xl font-bold text-center mb-2">Welcome to Admin Dashboard</h1>
+                <p class="mb-10">
+                    You can either manage users or books, please click on the desired action below
+                </p>
+                <div class="mt-4 flex justify-around">
+                    <a href="manage_users.html" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">Manage Users</a>
+                    <a href="manage_books.html" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg">Manage Books</a>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

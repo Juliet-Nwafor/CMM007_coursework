@@ -1,0 +1,6 @@
+# Folders to Ignore
+node_modules/
+
+# Files to ignore
+app/css/styles.css
+package-lock.json

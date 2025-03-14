@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+
+<body>
+    <div class="h-screen flex items-center justify-center bg-blue-100 px-4">
+        <form class="bg-white p-4 rounded-lg shadow-md w-full max-w-sm" action="/login" method="POST">
+            <h1 class="text-2xl font-bold">Register</h1>
+            <div class="mt-4">
+                <input type="text" name="name" class="border border-gray-300 p-2 rounded-lg w-full"
+                    placeholder="Full Name" required>
+            </div>
+            <div class="mt-4">
+                <input type="email" name="email" class="border border-gray-300 p-2 rounded-lg w-full" placeholder="Email"
+                    required>
+            </div>
+            <div class="mt-4">
+                <select type="text" name="role" class="border border-gray-300 p-2 rounded-lg w-full" required>
+                    <option value="">Select Role</option>
+                    <option value="admin">Admin</option>
+                    <option value="user">User</option>
+                </select>
+            </div>
+            <div class="mt-4">
+                <input type="password" name="password" class="border border-gray-300 p-2 rounded-lg w-full"
+                    placeholder="Password" required>
+            </div>
+            <button type="submit"
+                class="bg-slate-700 hover:bg-slate-900 text-white font-bold py-2 px-4 rounded-lg mt-4">
+                Sign Up
+            </button>
+            <div class="mt-4 text-center">
+                <a href="login.html" class="text-blue-600 hover:text-blue-700">Already have an account? Login</a>
+            </div>
+
+        </form>
+    </div>
+</body>
+
+</html>
