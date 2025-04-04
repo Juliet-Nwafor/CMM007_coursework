@@ -1,11 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome - Library Management System</title>
     <link rel="stylesheet" href="app/css/styles.css">
+    <link rel="shortcut icon" href="app/images/icons/books.svg" type="image/*">
+    <script>
+        // Check if the server configuration file exists in the backend
+        fetch('app/backend/config.php')
+            .then(response => {
+                if (!response.ok || response.status == 404) {
+                    // If the server configuration file does not exist, redirect to the configuration page
+                    window.location.href = 'app_config.html';
+                }
+            })
+    </script>
+
 </head>
 
 <body>
@@ -15,8 +26,6 @@
             <p class="text-center text-gray-500 mt-2">Welcome to the Library Management System</p>
             <div class="mt-4">
                 <a href="app/authenticate/login.html" class="block bg-slate-700 text-white text-center py-2 rounded-md">Login</a>
-                <a href="app/authenticate/register.html"
-                    class="block bg-slate-700 text-white text-center py-2 rounded-md mt-2">Register</a>
             </div>
         </div>
     </div>
