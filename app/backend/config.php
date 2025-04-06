@@ -5,9 +5,9 @@
         die('Connection failed: ' . $conn->connect_error);
     }
     
-     $sql = 'CREATE DATABASE IF NOT EXISTS library_system';
+     $sql = 'CREATE DATABASE IF NOT EXISTS lms_database';
     if ($conn->query($sql) === TRUE) {
-        $conn->select_db('library_system');
+        $conn->select_db('lms_database');
     } else {
         die('Error creating database: ' . $conn->error);
     }
@@ -18,7 +18,7 @@ function createConnectFile() {
     $connectContent .= "define('DB_HOST', 'localhost');\n";
     $connectContent .= "define('DB_USER', 'root');\n";
     $connectContent .= "define('DB_PASS', '');\n";
-    $connectContent .= "define('DB_NAME', 'library_system');\n\n";
+    $connectContent .= "define('DB_NAME', 'lms_database');\n\n";
     $connectContent .= "// Application settings\n";
     $connectContent .= "define('APP_DEBUG', false);\n";
     

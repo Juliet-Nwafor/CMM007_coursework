@@ -43,9 +43,14 @@ if ($conn->query($sql) !== TRUE) {
 // Populate genres table with default book genres
 $genres = ['Action', 'Adventure', 'Comedy', 'Drama', 'Fantasy', 'Historical', 'Horror', 'Mystery', 'Romance', 'Thriller', 'Fiction', 'Non-Fiction', 'Self-Help', 'Biography', 'History', 'Poetry'];
 foreach ($genres as $genre) {
-    $sql = "INSERT INTO genres (name) VALUES ('$genre')";
-    if ($conn->query($sql) !== TRUE) {
-        echo "Error inserting genre: " . $conn->error . "<br>";
+    // Select the genre. Insert it only if it does not exists (num_rows == 0)
+    $sql = "SELECT * FROM genres WHERE name = '$genre'";
+    $result = $conn->query($sql);
+    if ($result->num_rows == 0) {
+        $sql = "INSERT INTO genres (name) VALUES ('$genre')";
+        if ($conn->query($sql) !== TRUE) {
+            echo "Error inserting genre: " . $conn->error . "<br>";
+        }
     }
 }
 
@@ -59,6 +64,7 @@ $sql = "CREATE TABLE IF NOT EXISTS books (
     available_copies INT(4) NOT NULL,
     total_copies INT(4) NOT NULL,
     isbn VARCHAR(50) NOT NULL,
+    cover_image VARCHAR(255) NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (genre_id) REFERENCES genres(id)
 )";

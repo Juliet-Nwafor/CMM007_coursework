@@ -4,3 +4,6 @@ node_modules/
 # Files to ignore
 app/css/styles.css
 package-lock.json
+app/backend/assets/images
+app/backend/connect.php
+app/backend/config.php

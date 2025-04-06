@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Books</title>
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="shortcut icon" href="../images/icons/books.svg" type="image/*">
+    <script src="../js/auth.js"></script>
 </head>
 
 <body>
@@ -32,7 +34,7 @@
                             <img src="../images/icons/user.svg" alt="bell"
                                 class="h-7 w-7 rounded-full border bg-slate-300">
                         </a>
-                        <a href="../logout.php"
+                        <a role="button" onclick="logout()"
                             class="bg-slate-700 hover:bg-slate-900 text-white font-bold py-2 px-4 rounded-lg text-xs">Logout</a>
                     </div>
                 </div>
@@ -50,14 +52,22 @@
                         </span>
                     </aside>
                     <!-- Buttons -->
-                    <aside>
-                        <button
+                    <aside class="flex items-center gap-2">
+                        <button onclick="toggleModal('show', 'add_modal')"
                             class="border-slate-700 border bg-white hover:bg-slate-300 hover:text-slate-900 text-slate-700 font-bold py-2 px-4 rounded-lg text-xs flex items-center justify-center gap-2">
                             <img src="../images/icons/plusicon.svg" alt="bell" class="h-3 w-3">
                             <span>
                                 Add Book
                             </span>
                         </button>
+
+                        <a href="borrowed_books.html" role="button"
+                            class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg text-xs flex items-center justify-center gap-2">
+                            <img src="../images/icons/view-eye-white.svg" alt="bell" class="w-5">
+                            <span>
+                                Borrowed Books
+                            </span>
+                        </a>
                     </aside>
                 </div>
             </section>
@@ -71,16 +81,16 @@
                             <button class="pl-3 py-1">
                                 <img src="../images/icons/search_icon.svg" alt=" " class="h-5 opacity-45">
                             </button>
-                            <input type="search" placeholder="Search Books"
+                            <input type="search" placeholder="Search Books" id="search" onkeyup="searchBook()"
                                 class="px-3 py-1 flex-1 focus:ring-0 focus:outline-none">
                         </div>
                         <div class="bg-white/50 rounded-lg border border-slate-400 overflow-hidden flex items-center">
                             <button class="pl-3 py-1">
                                 <img src="../images/icons/filter_icons.svg" alt=" " class="h-5 opacity-45">
                             </button>
-                            <select class="px-3 py-1 flex-1 focus:ring-0 focus:outline-none">
+                            <select class="px-3 py-1 flex-1 focus:ring-0 focus:outline-none" id="filter"  onchange="searchBook()">
                                 <option value="" selected disabled>Filter</option>
-                                <option value="all">All</option>
+                                <option value="">All</option>
                             </select>
                         </div>
                     </aside>
@@ -92,7 +102,8 @@
                         <table class="shadow border border-slate-200 rounded-2xl overflow-hidden w-full text-left">
                             <thead class="bg-slate-100">
                                 <tr>
-                                    <th class="px-4 py-2 text-sm whitespace-nowrap min-w-[40%] font-semibold sticky left-0 bg-slate-100 z-10">
+                                    <th
+                                        class="px-4 py-2 text-sm whitespace-nowrap min-w-[40%] font-semibold sticky left-0 bg-slate-100 z-10">
                                         Book Title
                                     </th>
                                     <th class="px-4 py-2 text-sm whitespace-nowrap min-w-[20%] font-semibold">
@@ -102,10 +113,10 @@
                                         ISBN
                                     </th>
                                     <th class="px-4 py-2 text-sm font-semibold">
-                                        QTY
+                                        Available QTY
                                     </th>
                                     <th class="px-4 py-2 text-sm font-semibold">
-                                        Available
+                                        Total Copies
                                     </th>
                                     <th class="px-4 py-2 text-sm font-semibold">
                                         Action
@@ -113,67 +124,7 @@
                                 </tr>
                             </thead>
 
-                            <tbody class="bg-white divide-y divide-slate-300">
-                                <tr>
-                                    <td class="px-4 py-2 text-sm whitespace-nowrap min-w-[40%] sticky left-0 bg-white z-10">
-                                        Book 1 title
-                                    </td>
-                                    <td class="px-4 py-2 text-sm whitespace-nowrap min-w-[20%] ">
-                                        John Doe Abu
-                                    </td>
-                                    <td class="px-4 py-2 text-sm whitespace-nowrap min-w-[20%]">
-                                        12334-23-4-23-2311
-                                    </td>
-                                    <td class="px-4 py-2 text-sm ">
-                                        23
-                                    </td>
-                                    <td class="px-4 py-2 text-sm ">
-                                        <img src="../images/icons/check_icon.svg" alt="" class="h-5">
-                                    </td>
-                                    <td class="px-4 py-2 text-sm ">
-                                        <div class="flex items-center gap-1">
-                                            <button class="border-slate-400 border text-xs font-semibold py-1 px-2 rounded-lg">
-                                                View
-                                            </button>
-                                            <button class="bg-blue-500 text-white text-xs font-semibold py-1 px-2 rounded-lg">
-                                                Edit
-                                            </button>
-                                            <button class="bg-red-500 text-white text-xs font-semibold py-1 px-2 rounded-lg">
-                                                Delete
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="px-4 py-2 text-sm whitespace-nowrap min-w-[30%] sticky left-0 bg-white z-10">
-                                        Book 1 title
-                                    </td>
-                                    <td class="px-4 py-2 text-sm ">
-                                        John Doe Abu
-                                    </td>
-                                    <td class="px-4 py-2 text-sm ">
-                                        12334-23-4-23-2311
-                                    </td>
-                                    <td class="px-4 py-2 text-sm ">
-                                        0
-                                    </td>
-                                    <td class="px-4 py-2 text-sm ">
-                                        <img src="../images/icons/times_circle.svg" alt="" class="h-5">
-                                    </td>
-                                    <td class="px-4 py-2 text-sm ">
-                                        <div class="flex items-center gap-1">
-                                            <button class="border-slate-400 border text-xs font-semibold py-1 px-2 rounded-lg">
-                                                View
-                                            </button>
-                                            <button class="bg-blue-500 text-white text-xs font-semibold py-1 px-2 rounded-lg">
-                                                Edit
-                                            </button>
-                                            <button class="bg-red-500 text-white text-xs font-semibold py-1 px-2 rounded-lg">
-                                                Delete
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
+                            <tbody class="bg-white divide-y divide-slate-300" id="books_table">
                             </tbody>
                         </table>
                     </aside>
@@ -184,7 +135,8 @@
             <!-- Page Modal Elements Section -->
             <section>
                 <!-- Add Modal -->
-                <div id="add_modal" class="fixed h-screen top-0 left-0 w-full bg-slate-900/50 z-50 hidden justify-center items-center">
+                <div id="add_modal"
+                    class="fixed h-screen top-0 left-0 w-full bg-slate-900/50 z-50 hidden justify-center items-center">
                     <aside class="max-w-sm w-full p-4 max-h-[80dvh] overflow-y-auto">
                         <div class="bg-white min-h-32 rounded-md flex flex-col">
                             <header class="py-2 px-4 shadow flex justify-between items-center">
@@ -192,27 +144,64 @@
                                     Add Book
                                 </strong>
 
-                                <button>
+                                <button onclick="toggleModal('hide', 'add_modal')">
                                     <img src="../images/icons/times_circle.svg" alt="close" class="h-5" />
                                 </button>
                             </header>
-                            <form class="px-4 py-4">
+                            <form class="px-4 py-4" onsubmit="submitAddBookForm(event)" enctype="multipart/form-data">
                                 <div class="">
-                                    <input type="text" name="book_title" class="border border-gray-300 p-2 focus:outline-none rounded-lg w-full"
+                                    <input type="text" name="title" id="title"
+                                        class="border border-gray-300 p-2 focus:outline-none rounded-lg w-full"
                                         placeholder="Book Title" required>
                                 </div>
                                 <div class="mt-4">
-                                    <input type="text" name="author" class="border border-gray-300 p-2 focus:outline-none rounded-lg w-full"
+                                    <input type="text" name="author" id="author"
+                                        class="border border-gray-300 p-2 focus:outline-none rounded-lg w-full"
                                         placeholder="Book Author" required>
+                                </div>
+                                <div class="mt-4">
+                                    <input type="text" name="isbn" id="isbn"
+                                        class="border border-gray-300 p-2 focus:outline-none rounded-lg w-full"
+                                        placeholder="Book ISBN" required>
+                                </div>
+                                <div class="mt-4">
+                                    <input type="number" name="quantity" id="quantity"
+                                        class="border border-gray-300 p-2 focus:outline-none rounded-lg w-full"
+                                        placeholder="Book Quantity" required>
+                                </div>
+                                <div class="mt-4">
+                                    <select type="genre" name="genre" id="genre_options"
+                                        class="border border-gray-300 p-2 focus:outline-none rounded-lg w-full"
+                                        required>
+                                        <option value="" selected disabled>Select Genre</option>
+                                    </select>
+                                </div>
+                                <div class="mt-4">
+                                    <input type="date" name="published_date" id="published_date"
+                                        class="border border-gray-300 p-2 focus:outline-none rounded-lg w-full"
+                                        placeholder="Published Date" required>
+                                </div>
+                                <div class="mt-4">
+                                    <input type="file" name="cover_image" id="cover_image"
+                                        class="border border-gray-300 p-2 focus:outline-none rounded-lg w-full"
+                                        placeholder="Upload Cover Image" accept="image/*">
+                                </div>
+
+                                <div class="mt-4">
+                                    <button type="submit"
+                                        class="bg-slate-700 hover:bg-slate-900 text-white font-bold py-2 px-4 rounded-lg w-full">
+                                        Add Book
+                                    </button>
                                 </div>
                             </form>
                         </div>
                     </aside>
                 </div>
 
-                
+
                 <!-- Edit Modal -->
-                <div id="edit_modal" class="fixed h-screen top-0 left-0 w-full bg-slate-900/50 z-50 hidden justify-center items-center">
+                <div id="edit_modal"
+                    class="fixed h-screen top-0 left-0 w-full bg-slate-900/50 z-50 hidden justify-center items-center">
                     <aside class="max-w-sm w-full p-4 max-h-[80dvh] overflow-y-auto">
                         <div class="bg-white min-h-32 rounded-md flex flex-col">
                             <header class="py-2 px-4 shadow flex justify-between items-center">
@@ -220,27 +209,67 @@
                                     Edit Book
                                 </strong>
 
-                                <button>
+                                <button onclick="toggleModal('hide', 'edit_modal')">
                                     <img src="../images/icons/times_circle.svg" alt="close" class="h-5" />
                                 </button>
                             </header>
-                            <form class="px-4 py-4">
+                            <form class="px-4 py-4" onsubmit="submitEditBookForm(event)">
                                 <div class="">
-                                    <input type="text" name="book_title" class="border border-gray-300 p-2 focus:outline-none rounded-lg w-full"
+                                    <input type="hidden" name="book_id" id="edit_book_id">
+                                </div>
+                                <div class="">
+                                    <input type="text" name="title" id="edit_title"
+                                        class="border border-gray-300 p-2 focus:outline-none rounded-lg w-full"
                                         placeholder="Book Title" required>
                                 </div>
                                 <div class="mt-4">
-                                    <input type="text" name="author" class="border border-gray-300 p-2 focus:outline-none rounded-lg w-full"
+                                    <input type="text" name="author" id="edit_author"
+                                        class="border border-gray-300 p-2 focus:outline-none rounded-lg w-full"
                                         placeholder="Book Author" required>
+                                </div>
+                                <div class="mt-4">
+                                    <input type="text" name="isbn" id="edit_isbn"
+                                        class="border border-gray-300 p-2 focus:outline-none rounded-lg w-full"
+                                        placeholder="Book ISBN" required>
+                                </div>
+                                <div class="mt-4">
+                                    <input type="number" name="quantity" id="edit_quantity"
+                                        class="border border-gray-300 p-2 focus:outline-none rounded-lg w-full"
+                                        placeholder="Book Quantity" required>
+                                </div>
+                                <div class="mt-4">
+                                    <select type="genre" name="genre" id="edit_genre"
+                                        class="border border-gray-300 p-2 focus:outline-none rounded-lg w-full"
+                                        required>
+                                        <option value="" selected disabled>Select Genre</option>
+                                    </select>
+                                </div>
+                                <div class="mt-4">
+                                    <input type="date" name="published_date" id="edit_published_date"
+                                        class="border border-gray-300 p-2 focus:outline-none rounded-lg w-full"
+                                        placeholder="Published Date" required>
+                                </div>
+                                <!-- <div class="mt-4">
+                                    <input type="file" name="cover_image" id="edit_cover_image"
+                                        class="border border-gray-300 p-2 focus:outline-none rounded-lg w-full"
+                                        placeholder="Upload Cover Image" accept="image/*">
+                                </div> -->
+
+                                <div class="mt-4">
+                                    <button type="submit"
+                                        class="bg-slate-700 hover:bg-slate-900 text-white font-bold py-2 px-4 rounded-lg w-full">
+                                        Update Book
+                                    </button>
                                 </div>
                             </form>
                         </div>
                     </aside>
                 </div>
 
-                
+
                 <!-- View Modal -->
-                <div id="view_modal" class="fixed h-screen top-0 left-0 w-full bg-slate-900/50 z-50 hidden justify-center items-center">
+                <div id="view_modal"
+                    class="fixed h-screen top-0 left-0 w-full bg-slate-900/50 z-50 hidden justify-center items-center">
                     <aside class="max-w-sm w-full p-4 max-h-[80dvh] overflow-y-auto">
                         <div class="bg-white min-h-32 rounded-md flex flex-col">
                             <header class="py-2 px-4 shadow flex justify-between items-center">
@@ -248,34 +277,62 @@
                                     Book Details
                                 </strong>
 
-                                <button>
+                                <button onclick="toggleModal('hide', 'view_modal')" >
                                     <img src="../images/icons/times_circle.svg" alt="close" class="h-5" />
                                 </button>
                             </header>
-                            <form class="px-4 py-4">
-                                <div class="">
-                                    <input type="text" name="book_title" class="border border-gray-300 p-2 focus:outline-none rounded-lg w-full"
-                                        placeholder="Book Title" required>
+                            <div>
+                                <div class="px-4 py-4">
+                                    <div class="mb-4">
+                                        <label class="block text-gray-700 font-bold">Title:</label>
+                                        <p id="view_title" class="text-gray-600"></p>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="block text-gray-700 font-bold">Author:</label>
+                                        <p id="view_author" class="text-gray-600"></p>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="block text-gray-700 font-bold">ISBN:</label>
+                                        <p id="view_isbn" class="text-gray-600"></p>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="block text-gray-700 font-bold">Genre:</label>
+                                        <p id="view_genre" class="text-gray-600"></p>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="block text-gray-700 font-bold">Published Date:</label>
+                                        <p id="view_published_date" class="text-gray-600"></p>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="block text-gray-700 font-bold">Available Copies:</label>
+                                        <p id="view_available_copies" class="text-gray-600"></p>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="block text-gray-700 font-bold">Total Copies:</label>
+                                        <p id="view_total_copies" class="text-gray-600"></p>
+                                    </div>
+                                    <div class="mb-4">
+                                        <img id="view_cover_image" alt="Cover Image"
+                                            class="h-40 w-40 object-cover mx-auto">
+                                    </div>
                                 </div>
-                                <div class="mt-4">
-                                    <input type="text" name="author" class="border border-gray-300 p-2 focus:outline-none rounded-lg w-full"
-                                        placeholder="Book Author" required>
-                                </div>
-                            </form>
+
+                            </div>
                         </div>
                     </aside>
                 </div>
 
-                
+
                 <!-- Delete Modal -->
-                <div id="delete_modal" class="fixed h-screen top-0 left-0 w-full bg-slate-900/50 z-50 hidden justify-center items-center">
+                <div id="delete_modal"
+                    class="fixed h-screen top-0 left-0 w-full bg-slate-900/50 z-50 hidden justify-center items-center">
                     <aside class="max-w-sm w-full p-4 max-h-[80dvh] overflow-y-auto">
                         <div class="bg-white min-h-32 rounded-md flex flex-col">
-                            <form class="px-4 py-4">
+                            <form class="px-4 py-4" onsubmit="submitDeleteBookForm(event)">
                                 <div class="">
-                                    <input type="hidden" name="book_id" required>
+                                    <input type="hidden" name="book_id" id="delete_book_id" required>
                                 </div>
-                                
+
                                 <div class="">
                                     <h1 class="text-2xl text-center text-red-500">
                                         <img src="../images/icons/trash_alt.svg" alt="close" class="h-16 mx-auto" />
@@ -288,7 +345,8 @@
                                     </p>
                                 </div>
                                 <div class="mt-5 flex justify-center items-center gap-5">
-                                    <button type="button" class="bg-blue-500 py-1 px-4 rounded-lg text-white">
+                                    <button onclick="toggleModal('hide', 'delete_modal')" type="button"
+                                        class="bg-blue-500 py-1 px-4 rounded-lg text-white">
                                         Cancel
                                     </button>
                                     <button type="submit" class="bg-red-500 py-1 px-4 rounded-lg text-white">
@@ -302,6 +360,237 @@
             </section>
         </main>
     </div>
+
+    <!-- Scripts -->
+    <script>
+        const fetchGenres = () => {
+            fetch('../backend/admin/fetch_genres.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        let options = '<option value="" selected disabled>Select Genre</option>';
+                        let filters = `<option value="" selected disabled>Filter</option>
+                                <option value="">All</option>`;
+                        data.genres.forEach((genre) => {
+                            options += `<option value="${genre.id}">${genre.name}</option>`;
+                            filters += `<option value="${genre.id}">${genre.name}</option>`;
+                        });
+                        document.getElementById('genre_options').innerHTML = options;
+                        document.getElementById('edit_genre').innerHTML = options;
+                        document.getElementById('filter').innerHTML = filters;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching genres:', error);
+                });
+
+        }
+        fetchGenres();
+
+        const displayBooksOnTable = (books) => {
+            let book_list = '';
+            books.forEach((book) => {
+                book_list += `
+                                <tr>
+                                    <td class="px-4 py-2 text-sm capitalize whitespace-nowrap min-w-[40%] sticky left-0 bg-white z-10">
+                                        <div class="flex items-center gap-2">
+                                            <div class="w-10 h-10 flex justify-center items-center">
+                                            <img src="${book.cover_image}" alt="Cover Image" class="h-10 w-10 object-cover">
+                                        </div>
+                                        <span>${book.title}</span>
+                                    </div>
+                                    </td>
+                                    <td class="px-4 py-2 text-sm whitespace-nowrap min-w-[20%]">
+                                        ${book.author}
+                                    </td>
+                                    <td class="px-4 py-2 text-sm whitespace-nowrap min-w-[20%]">
+                                        ${book.isbn}
+                                    </td>
+                                    <td class="px-4 py-2 text-sm capitalize">
+                                        ${book.available_copies}
+                                    </td>
+                                    <td class="px-4 py-2 text-sm capitalize">
+                                        ${book.total_copies}
+                                    </td>
+                                    <td class="px-4 py-2 text-sm ">
+                                        <div class="flex items-center gap-1">
+                                            <button onclick="viewBook('${book.id}', '${book.title}', '${book.author}', '${book.publication_year}', '${book.isbn}', '${book.genre?.name}', '${book.available_copies}', '${book.total_copies}', '${book.cover_image}')"
+                                                class="border-slate-400 border text-xs font-semibold py-1 px-2 rounded-lg">
+                                                View
+                                            </button>
+                                            <button onclick="editBook('${book.id}', '${book.title}', '${book.author}', '${book.publication_year}', '${book.isbn}', '${book.genre_id}', '${book.available_copies}', '${book.total_copies}')" 
+                                                class="bg-blue-500 text-white text-xs font-semibold py-1 px-2 rounded-lg">
+                                                Edit
+                                            </button>
+                                            <button onclick="showDeleteModal('${book.id}')" class="bg-red-500 text-white text-xs font-semibold py-1 px-2 rounded-lg">
+                                                Delete
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            `;
+            })
+            document.getElementById('books_table').innerHTML = book_list;
+        }
+        const fetch_books = () => {
+            let token = localStorage.getItem('token');
+            fetch('../backend/admin/fetch_books.php', {
+                headers: {
+                    'Authorization': token
+                }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        displayBooksOnTable(data.books)
+                    }
+                })
+        }
+
+        fetch_books();
+
+        const toggleModal = (modalState, modalId) => {
+            const modal = document.getElementById(modalId);
+            if (modalState === 'show') {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            } else {
+                modal.classList.remove('flex');
+                modal.classList.add('hidden');
+            }
+        }
+
+        const submitAddBookForm = (event) => {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+            fetch('../backend/admin/add_book.php', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Authorization': localStorage.getItem('token')
+                }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        toggleModal('hide', 'add_modal');
+                        fetch_books();
+                        form.reset();
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error(error)
+                })
+        }
+
+        const editBook = (book_id, title, author, publication_year, isbn, genre_id, available_copies, total_copies) => {
+            document.getElementById('edit_book_id').value = book_id;
+            document.getElementById('edit_title').value = title;
+            document.getElementById('edit_author').value = author;
+            document.getElementById('edit_published_date').value = publication_year;
+            document.getElementById('edit_isbn').value = isbn;
+            document.getElementById('edit_genre').value = genre_id;
+            document.getElementById('edit_quantity').value = total_copies;
+
+            toggleModal('show', 'edit_modal');
+        }
+
+        const submitEditBookForm = (event) => {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+            fetch('../backend/admin/update_book.php', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Authorization': localStorage.getItem('token')
+                }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        toggleModal('hide', 'edit_modal');
+                        fetch_books();
+                        form.reset();
+                        alert(data.message);
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error(error)
+                })
+        }
+
+        const showDeleteModal = (book_id) => {
+            document.getElementById('delete_book_id').value = book_id;
+            toggleModal('show', 'delete_modal');
+        }
+
+        const submitDeleteBookForm = (event) => {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+
+            fetch('../backend/admin/delete_book.php', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Authorization': localStorage.getItem('token')
+                }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        fetch_books();
+                        alert(data.message);
+                        toggleModal('hide', 'delete_modal');
+                        form.reset();
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                })
+        }
+
+        const searchBook = () => {
+            searchValue = document.getElementById('search').value;
+            filterBy = document.getElementById('filter').value;
+
+            fetch(`../backend/admin/search_books.php?search=${searchValue}&filter=${filterBy}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': localStorage.getItem('token')
+                }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        displayBooksOnTable(data.books);
+                    }
+                })
+        }
+
+        
+        const viewBook = (book_id, title, author, publication_year, isbn, genre, available_copies, total_copies, cover_image) => {
+            document.getElementById('view_title').innerText = title;
+            document.getElementById('view_author').innerText = author;
+            document.getElementById('view_genre').innerText = genre;
+            document.getElementById('view_published_date').innerText = publication_year;
+            document.getElementById('view_isbn').innerText = isbn;
+            document.getElementById('view_available_copies').innerText = available_copies;
+            document.getElementById('view_total_copies').innerText = total_copies;
+            document.getElementById('view_cover_image').src = cover_image;
+            toggleModal('show', 'view_modal');
+        }
+        
+
+    </script>
 </body>
 
 </html>

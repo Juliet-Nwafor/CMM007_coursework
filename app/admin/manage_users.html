@@ -1,31 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Users</title>
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="shortcut icon" href="../images/icons/books.svg" type="image/*">
+    <script src="../js/auth.js"></script>
 </head>
+
 <body>
     <div class="h-screen bg-blue-100">
         <header class="bg-white w-full shadow-md sticky top-0 z-50">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex flex-col md:flex-row md:justify-between md:items-center py-2">
                     <div class="flex items-center">
-                        <a href="index.html" class="text-slate-800 hover:text-slate-900 font-bold text-lg">Library Management System</a>
+                        <a href="index.html" class="text-slate-800 hover:text-slate-900 font-bold text-lg">Library
+                            Management System</a>
                     </div>
                     <div class="flex items-center gap-2">
-                        <a href="index.html" class=" text-slate-700 font-semibold py-2 px-4 rounded-lg text-sm">Dashboard</a>
-                        <a href="manage_users.html" class="border-y text-slate-700 font-semibold py-2 px-4 rounded-lg text-sm">Manage Users</a>
-                        <a href="manage_books.html" class=" text-slate-700 font-semibold py-2 px-4 rounded-lg text-sm">Manage Books</a>
+                        <a href="index.html"
+                            class=" text-slate-700 font-semibold py-2 px-4 rounded-lg text-sm">Dashboard</a>
+                        <a href="manage_users.html"
+                            class="border-y text-slate-700 font-semibold py-2 px-4 rounded-lg text-sm">Manage Users</a>
+                        <a href="manage_books.html"
+                            class=" text-slate-700 font-semibold py-2 px-4 rounded-lg text-sm">Manage Books</a>
                         <a href="#" class=" text-slate-700 font-semibold py-2 px-4 rounded-lg text-sm">
                             <img src="../images/icons/bell.svg" alt="bell" class="h-5">
                         </a>
                         <a href="#" class=" text-slate-700 font-semibold py-2 px-4 rounded-lg text-sm">
-                            <img src="../images/icons/user.svg" alt="bell" class="h-7 w-7 rounded-full border bg-slate-300">
+                            <img src="../images/icons/user.svg" alt="bell"
+                                class="h-7 w-7 rounded-full border bg-slate-300">
                         </a>
-                        <a href="../logout.php" class="bg-slate-700 hover:bg-slate-900 text-white font-bold py-2 px-4 rounded-lg text-xs">Logout</a>
+                        <a role="button" onclick="logout()"
+                            class="bg-slate-700 hover:bg-slate-900 text-white font-bold py-2 px-4 rounded-lg text-xs">Logout</a>
                     </div>
                 </div>
             </div>
@@ -43,7 +52,7 @@
                     </aside>
                     <!-- Buttons -->
                     <aside>
-                        <button
+                        <button onclick="toggleModal('show', 'add_modal')"
                             class="border-slate-700 border bg-white hover:bg-slate-300 hover:text-slate-900 text-slate-700 font-bold py-2 px-4 rounded-lg text-xs flex items-center justify-center gap-2">
                             <img src="../images/icons/plusicon.svg" alt="bell" class="h-3 w-3">
                             <span>
@@ -63,16 +72,18 @@
                             <button class="pl-3 py-1">
                                 <img src="../images/icons/search_icon.svg" alt=" " class="h-5 opacity-45">
                             </button>
-                            <input type="search" placeholder="Search User Table"
-                                class="px-3 py-1 flex-1 focus:ring-0 focus:outline-none">
+                            <input type="search" placeholder="Search User Table" onkeyup="searchUser()"
+                                class="px-3 py-1 flex-1 focus:ring-0 focus:outline-none" id="search">
                         </div>
                         <div class="bg-white/50 rounded-lg border border-slate-400 overflow-hidden flex items-center">
                             <button class="pl-3 py-1">
                                 <img src="../images/icons/filter_icons.svg" alt=" " class="h-5 opacity-45">
                             </button>
-                            <select class="px-3 py-1 flex-1 focus:ring-0 focus:outline-none">
+                            <select class="px-3 py-1 flex-1 focus:ring-0 focus:outline-none" id="filter" onchange="searchUser()">
                                 <option value="" selected disabled>Filter</option>
                                 <option value="all">All</option>
+                                <option value="user">User</option>
+                                <option value="admin">Admin</option>
                             </select>
                         </div>
                     </aside>
@@ -84,7 +95,8 @@
                         <table class="shadow border border-slate-200 rounded-2xl overflow-hidden w-full text-left">
                             <thead class="bg-slate-100">
                                 <tr>
-                                    <th class="px-4 py-2 text-sm whitespace-nowrap min-w-[40%] font-semibold sticky left-0 bg-slate-100 z-10">
+                                    <th
+                                        class="px-4 py-2 text-sm whitespace-nowrap min-w-[40%] font-semibold sticky left-0 bg-slate-100 z-10">
                                         Name
                                     </th>
                                     <th class="px-4 py-2 text-sm whitespace-nowrap min-w-[20%] font-semibold">
@@ -93,11 +105,11 @@
                                     <th class="px-4 py-2 text-sm whitespace-nowrap min-w-[20%] font-semibold">
                                         Email
                                     </th>
-                                    <th class="px-4 py-2 text-sm font-semibold">
-                                        Role
+                                    <th class="px-4 py-2 text-sm font-semibold whitespace-nowrap min-w-[10%]">
+                                        Phone
                                     </th>
                                     <th class="px-4 py-2 text-sm font-semibold">
-                                        Account Status
+                                        Role
                                     </th>
                                     <th class="px-4 py-2 text-sm font-semibold">
                                         Action
@@ -105,67 +117,8 @@
                                 </tr>
                             </thead>
 
-                            <tbody class="bg-white divide-y divide-slate-300">
-                                <tr>
-                                    <td class="px-4 py-2 text-sm whitespace-nowrap min-w-[40%] sticky left-0 bg-white z-10">
-                                        John Doe Abu
-                                    </td>
-                                    <td class="px-4 py-2 text-sm whitespace-nowrap min-w-[20%] ">
-                                        abudhabi
-                                    </td>
-                                    <td class="px-4 py-2 text-sm whitespace-nowrap min-w-[20%]">
-                                        john@dummy.com
-                                    </td>
-                                    <td class="px-4 py-2 text-sm capitalize">
-                                        admin
-                                    </td>
-                                    <td class="px-4 py-2 text-sm ">
-                                        <img src="../images/icons/check_icon.svg" alt="" class="h-5">
-                                    </td>
-                                    <td class="px-4 py-2 text-sm ">
-                                        <div class="flex items-center gap-1">
-                                            <button class="border-slate-400 border text-xs font-semibold py-1 px-2 rounded-lg">
-                                                View
-                                            </button>
-                                            <button class="bg-blue-500 text-white text-xs font-semibold py-1 px-2 rounded-lg">
-                                                Edit
-                                            </button>
-                                            <button class="bg-red-500 text-white text-xs font-semibold py-1 px-2 rounded-lg">
-                                                Delete
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="px-4 py-2 text-sm whitespace-nowrap min-w-[40%] sticky left-0 bg-white z-10">
-                                        Abu Doe John 
-                                    </td>
-                                    <td class="px-4 py-2 text-sm whitespace-nowrap min-w-[20%] ">
-                                        johnbull
-                                    </td>
-                                    <td class="px-4 py-2 text-sm whitespace-nowrap min-w-[20%]">
-                                        john@abunation.com
-                                    </td>
-                                    <td class="px-4 py-2 text-sm capitalize">
-                                        user
-                                    </td>
-                                    <td class="px-4 py-2 text-sm ">
-                                        <img src="../images/icons/times_circle.svg" alt="" class="h-5">
-                                    </td>
-                                    <td class="px-4 py-2 text-sm ">
-                                        <div class="flex items-center gap-1">
-                                            <button class="border-slate-400 border text-xs font-semibold py-1 px-2 rounded-lg">
-                                                View
-                                            </button>
-                                            <button class="bg-blue-500 text-white text-xs font-semibold py-1 px-2 rounded-lg">
-                                                Edit
-                                            </button>
-                                            <button class="bg-red-500 text-white text-xs font-semibold py-1 px-2 rounded-lg">
-                                                Delete
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
+                            <tbody class="bg-white divide-y divide-slate-300" id="users_table">
+
                             </tbody>
                         </table>
                     </aside>
@@ -176,98 +129,130 @@
             <!-- Page Modal Elements Section -->
             <section>
                 <!-- Add Modal -->
-                <div id="add_modal" class="fixed h-screen top-0 left-0 w-full bg-slate-900/50 z-50 hidden justify-center items-center">
+                <div id="add_modal"
+                    class="fixed h-screen top-0 left-0 w-full bg-slate-900/50 z-50 hidden justify-center items-center">
                     <aside class="max-w-sm w-full p-4 max-h-[80dvh] overflow-y-auto">
                         <div class="bg-white min-h-32 rounded-md flex flex-col">
                             <header class="py-2 px-4 shadow flex justify-between items-center">
                                 <strong>
-                                    Add Book
+                                    Add New User
                                 </strong>
 
-                                <button>
+                                <button type="button" onclick="toggleModal('hide', 'add_modal')">
                                     <img src="../images/icons/times_circle.svg" alt="close" class="h-5" />
                                 </button>
                             </header>
-                            <form class="px-4 py-4">
+                            <form class="px-4 py-4" onsubmit="submitAddUserForm(event)">
                                 <div class="">
-                                    <input type="text" name="book_title" class="border border-gray-300 p-2 focus:outline-none rounded-lg w-full"
-                                        placeholder="Book Title" required>
+                                    <input type="text" name="fullname"
+                                        class="border border-gray-300 p-2 focus:outline-none rounded-lg w-full"
+                                        placeholder="Enter fullname" required>
                                 </div>
                                 <div class="mt-4">
-                                    <input type="text" name="author" class="border border-gray-300 p-2 focus:outline-none rounded-lg w-full"
-                                        placeholder="Book Author" required>
+                                    <input type="text" name="username"
+                                        class="border border-gray-300 p-2 focus:outline-none rounded-lg w-full"
+                                        placeholder="Enter username" required>
+                                </div>
+                                <div class="mt-4">
+                                    <input type="email" name="email"
+                                        class="border border-gray-300 p-2 focus:outline-none rounded-lg w-full"
+                                        placeholder="Enter email" required>
+                                </div>
+                                <div class="mt-4">
+                                    <input type="text" name="phone"
+                                        class="border border-gray-300 p-2 focus:outline-none rounded-lg w-full"
+                                        placeholder="Enter phone number" required>
+                                </div>
+                                <div class="mt-4">
+                                    <select name="role"
+                                        class="border border-gray-300 p-2 focus:outline-none rounded-lg w-full">
+                                        <option value="admin">Admin</option>
+                                        <option value="user">User</option>
+                                    </select>
+                                </div>
+                                <div class="mt-4">
+                                    <input type="password" name="password"
+                                        class="border border-gray-300 p-2 focus:outline-none rounded-lg w-full"
+                                        placeholder="Enter password" required>
+                                </div>
+                                <div class="mt-4">
+                                    <button type="submit"
+                                        class="bg-slate-700 hover:bg-slate-900 text-white font-bold py-2 px-4 rounded-lg">
+                                        Add User
+                                    </button>
                                 </div>
                             </form>
                         </div>
                     </aside>
                 </div>
 
-                
+
                 <!-- Edit Modal -->
-                <div id="edit_modal" class="fixed h-screen top-0 left-0 w-full bg-slate-900/50 z-50 hidden justify-center items-center">
+                <div id="edit_modal"
+                    class="fixed h-screen top-0 left-0 w-full bg-slate-900/50 z-50 hidden justify-center items-center">
                     <aside class="max-w-sm w-full p-4 max-h-[80dvh] overflow-y-auto">
                         <div class="bg-white min-h-32 rounded-md flex flex-col">
                             <header class="py-2 px-4 shadow flex justify-between items-center">
                                 <strong>
-                                    Edit Book
+                                    Edit User
                                 </strong>
 
-                                <button>
+                                <button type="button" onclick="toggleModal('hide', 'edit_modal')">
                                     <img src="../images/icons/times_circle.svg" alt="close" class="h-5" />
                                 </button>
                             </header>
-                            <form class="px-4 py-4">
+                            <form class="px-4 py-4" onsubmit="submitEditUserForm(event)">
+                                <input type="hidden" name="user_id" id="edit_user_id">
                                 <div class="">
-                                    <input type="text" name="book_title" class="border border-gray-300 p-2 focus:outline-none rounded-lg w-full"
-                                        placeholder="Book Title" required>
+                                    <input type="text" name="fullname"
+                                        class="border border-gray-300 p-2 focus:outline-none rounded-lg w-full"
+                                        placeholder="Enter fullname" required id="edit_fullname">
                                 </div>
                                 <div class="mt-4">
-                                    <input type="text" name="author" class="border border-gray-300 p-2 focus:outline-none rounded-lg w-full"
-                                        placeholder="Book Author" required>
+                                    <input type="text" name="username"
+                                        class="border border-gray-300 p-2 focus:outline-none rounded-lg w-full"
+                                        placeholder="Enter username" required id="edit_username">
+                                </div>
+                                <div class="mt-4">
+                                    <input type="email" name="email"
+                                        class="border border-gray-300 p-2 focus:outline-none rounded-lg w-full"
+                                        placeholder="Enter email" required id="edit_email">
+                                </div>
+                                <div class="mt-4">
+                                    <input type="text" name="phone"
+                                        class="border border-gray-300 p-2 focus:outline-none rounded-lg w-full"
+                                        placeholder="Enter phone number" required id="edit_phone">
+                                </div>
+                                <div class="mt-4">
+                                    <select name="role" id="edit_role"
+                                        class="border border-gray-300 p-2 focus:outline-none rounded-lg w-full">
+                                        <option value="admin">Admin</option>
+                                        <option value="user">User</option>
+                                    </select>
+                                </div>
+                                <div class="mt-4">
+                                    <button type="submit"
+                                        class="bg-slate-700 hover:bg-slate-900 text-white font-bold py-2 px-4 rounded-lg">
+                                        Update User
+                                    </button>
                                 </div>
                             </form>
                         </div>
                     </aside>
                 </div>
 
-                
-                <!-- View Modal -->
-                <div id="view_modal" class="fixed h-screen top-0 left-0 w-full bg-slate-900/50 z-50 hidden justify-center items-center">
-                    <aside class="max-w-sm w-full p-4 max-h-[80dvh] overflow-y-auto">
-                        <div class="bg-white min-h-32 rounded-md flex flex-col">
-                            <header class="py-2 px-4 shadow flex justify-between items-center">
-                                <strong>
-                                    Book Details
-                                </strong>
 
-                                <button>
-                                    <img src="../images/icons/times_circle.svg" alt="close" class="h-5" />
-                                </button>
-                            </header>
-                            <form class="px-4 py-4">
-                                <div class="">
-                                    <input type="text" name="book_title" class="border border-gray-300 p-2 focus:outline-none rounded-lg w-full"
-                                        placeholder="Book Title" required>
-                                </div>
-                                <div class="mt-4">
-                                    <input type="text" name="author" class="border border-gray-300 p-2 focus:outline-none rounded-lg w-full"
-                                        placeholder="Book Author" required>
-                                </div>
-                            </form>
-                        </div>
-                    </aside>
-                </div>
 
-                
                 <!-- Delete Modal -->
-                <div id="delete_modal" class="fixed h-screen top-0 left-0 w-full bg-slate-900/50 z-50 hidden justify-center items-center">
+                <div id="delete_modal"
+                    class="fixed h-screen top-0 left-0 w-full bg-slate-900/50 z-50 hidden justify-center items-center">
                     <aside class="max-w-sm w-full p-4 max-h-[80dvh] overflow-y-auto">
                         <div class="bg-white min-h-32 rounded-md flex flex-col">
-                            <form class="px-4 py-4">
+                            <form class="px-4 py-4" onsubmit="submitDeleteUserForm(event)">
                                 <div class="">
-                                    <input type="hidden" name="book_id" required>
+                                    <input type="hidden" name="user_id" id="delete_user_id" required>
                                 </div>
-                                
+
                                 <div class="">
                                     <h1 class="text-2xl text-center text-red-500">
                                         <img src="../images/icons/trash_alt.svg" alt="close" class="h-16 mx-auto" />
@@ -280,7 +265,8 @@
                                     </p>
                                 </div>
                                 <div class="mt-5 flex justify-center items-center gap-5">
-                                    <button type="button" class="bg-blue-500 py-1 px-4 rounded-lg text-white">
+                                    <button onclick="toggleModal('hide', 'delete_modal')" type="button"
+                                        class="bg-blue-500 py-1 px-4 rounded-lg text-white">
                                         Cancel
                                     </button>
                                     <button type="submit" class="bg-red-500 py-1 px-4 rounded-lg text-white">
@@ -294,5 +280,189 @@
             </section>
         </main>
     </div>
+
+    <!-- Scripts -->
+    <script>
+        const displayUsersOnTable = (users) => {
+            let user_list = '';
+            users.forEach((user) => {
+                user_list += `
+                                <tr>
+                                    <td class="px-4 py-2 text-sm capitalize whitespace-nowrap min-w-[30%] sticky left-0 bg-white z-10">
+                                        ${user.fullname}
+                                    </td>
+                                    <td class="px-4 py-2 text-sm whitespace-nowrap min-w-[20%]">
+                                        ${user.username}
+                                    </td>
+                                    <td class="px-4 py-2 text-sm whitespace-nowrap min-w-[20%]">
+                                        ${user.email}
+                                    </td>
+                                    <td class="px-4 py-2 text-sm capitalize whitespace-nowrap min-w-[10%]">
+                                        ${user.phone}
+                                    </td>
+                                    <td class="px-4 py-2 text-sm capitalize">
+                                        ${user.role}
+                                    </td>
+                                    <td class="px-4 py-2 text-sm ">
+                                        <div class="flex items-center gap-1">
+                                            <button onclick="editUser('${user.id}', '${user.fullname}', '${user.username}', '${user.email}', '${user.phone}', '${user.role}')" 
+                                                class="bg-blue-500 text-white text-xs font-semibold py-1 px-2 rounded-lg">
+                                                Edit
+                                            </button>
+                                            <button onclick="showDeleteModal('${user.id}')" class="bg-red-500 text-white text-xs font-semibold py-1 px-2 rounded-lg">
+                                                Delete
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            `;
+            })
+            document.getElementById('users_table').innerHTML = user_list;
+        }
+        const fetch_users = () => {
+            let token = localStorage.getItem('token');
+            fetch('../backend/admin/fetch_users.php', {
+                headers: {
+                    'Authorization': token
+                }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        displayUsersOnTable(data.users)
+                    }
+                })
+        }
+
+        fetch_users();
+
+        const toggleModal = (modalState, modalId) => {
+            const modal = document.getElementById(modalId);
+            if (modalState === 'show') {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            } else {
+                modal.classList.remove('flex');
+                modal.classList.add('hidden');
+            }
+        }
+
+        const submitAddUserForm = (event) => {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+            fetch('../backend/admin/add_user.php', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Authorization': localStorage.getItem('token')
+                }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        toggleModal('hide', 'add_modal');
+                        fetch_users();
+                        form.reset();
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error(error)
+                })
+        }
+
+        let editUser = (user_id, fullname, username, email, phone, role) => {
+            // console.log(user_id, fullname, username, email, phone, role);
+            document.getElementById('edit_user_id').value = user_id;
+            document.getElementById('edit_fullname').value = fullname;
+            document.getElementById('edit_username').value = username;
+            document.getElementById('edit_email').value = email;
+            document.getElementById('edit_phone').value = phone;
+            document.getElementById('edit_role').value = role;
+            toggleModal('show', 'edit_modal');
+        }
+
+        const submitEditUserForm = (event) => {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+            fetch('../backend/admin/update_user.php', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Authorization': localStorage.getItem('token')
+                }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        toggleModal('hide', 'edit_modal');
+                        fetch_users();
+                        form.reset();
+                        alert(data.message);
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error(error)
+                })
+        }
+
+        const showDeleteModal = (user_id) => {
+            document.getElementById('delete_user_id').value = user_id;
+            toggleModal('show', 'delete_modal');
+        }
+
+        const submitDeleteUserForm = (event) => {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+
+            fetch('../backend/admin/delete_user.php', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Authorization': localStorage.getItem('token')
+                }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        fetch_users();
+                        alert(data.message);
+                        toggleModal('hide', 'delete_modal');
+                        form.reset();
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                })
+        }
+
+        const searchUser = () => {
+            searchValue = document.getElementById('search').value;
+            filterBy = document.getElementById('filter').value;
+
+            fetch(`../backend/admin/search_user.php?search=${searchValue}&filter=${filterBy}`,{
+                method: 'GET',
+                headers:{
+                    'Authorization': localStorage.getItem('token')
+                }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        displayUsersOnTable(data.users);
+                    }
+                })
+        }
+
+    </script>
 </body>
+
 </html>

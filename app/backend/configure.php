@@ -10,7 +10,7 @@ if (!file_exists($filePath)) {
         $hostname = $_POST['hostname'];
         $username = $_POST['username'];
         $password = $_POST['password'];
-        $databaseName = $_POST['database_name'];
+        $databaseName = str_replace(' ', '_', strtolower($_POST['database_name']));
 
         // Create a function that creates the connect.php file and establish a connection to the database
         $configContent = "<?php\n\n";
