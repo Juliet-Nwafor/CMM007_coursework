@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,9 @@
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="shortcut icon" href="../images/icons/books.svg" type="image/*">
     <script src="../js/auth.js"></script>
+
+    <!-- Downloaded and Used Moment.js Library. Reference : https://momentjs.com/ -->
+    <script src="../js/moment.js"></script>
 </head>
 
 <body>
@@ -26,14 +30,15 @@
                             class="text-slate-700 font-semibold py-2 px-4 rounded-lg text-sm">Manage Users</a>
                         <a href="manage_books.html"
                             class="border-y text-slate-700 font-semibold py-2 px-4 rounded-lg text-sm">Manage Books</a>
-                        <a href="#" class=" text-slate-700 font-semibold py-2 px-4 rounded-lg text-sm">
-                            <img src="../images/icons/bell.svg" alt="bell" class="h-5">
+                        <a href="borrow_settings.html"
+                            class=" text-slate-700 font-semibold py-2 px-4 rounded-lg text-sm">
+                            <img src="../images/icons/settings.svg" alt="settings" class="h-5">
                         </a>
                         <a href="#" class=" text-slate-700 font-semibold py-2 px-4 rounded-lg text-sm">
                             <img src="../images/icons/user.svg" alt="bell"
                                 class="h-7 w-7 rounded-full border bg-slate-300">
                         </a>
-                        <a role="button" onclick="logout()" 
+                        <a role="button" onclick="logout()"
                             class="bg-slate-700 hover:bg-slate-900 text-white font-bold py-2 px-4 rounded-lg text-xs">Logout</a>
                     </div>
                 </div>
@@ -63,118 +68,62 @@
                 </div>
             </section>
 
+            <!-- Section for lending and returning -->
+            <section class="mb-6">
+                <form class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-center" onsubmit="lendBook(event)">
+                    <div class="flex items-center gap-2">
+                        <div class="bg-white/50 rounded-lg border border-slate-400 flex items-center">
+                            <div class="relative">
+                                <input type="hidden" name="user_id" id="user_id">
+                                <input type="search" id="userSearch" required
+                                    class="px-3 py-1 flex-1 focus:ring-0 focus:outline-none" placeholder="Search User"
+                                    onkeyup="searchUser(event)">
+                                <ul id="userSearchResults"
+                                    class="absolute w-full overflow-y-auto bg-white rounded-lg border border-slate-400 z-50 hidden">
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="bg-white/50 rounded-lg border border-slate-400 flex items-center">
+                            <div class="relative">
+                                <input type="hidden" name="book_id" id="book_id">
+                                <input type="search" id="bookSearch" required
+                                    class="px-3 py-1 flex-1 focus:ring-0 focus:outline-none" placeholder="Search Books"
+                                    onkeyup="searchBook(event)">
+                                <ul id="bookSearchResults"
+                                    class="absolute w-full overflow-y-auto bg-white rounded-lg border border-slate-400 z-50">
+                                </ul>
+                            </div>
+                        </div>
+                        <button type="submit"
+                            class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg text-xs">
+                            Lend
+                        </button>
+                    </div>
+                </form>
+            </section>
+
             <!-- Books Tables -->
             <section>
-                <!-- Search Input and filter -->
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-end items-center gap-2 mb-4">
-                    <aside class="flex items-center gap-2 text-sm">
-                        <div class="bg-white/50 rounded-lg border border-slate-400 overflow-hidden flex items-center">
-                            <button class="pl-3 py-1">
-                                <img src="../images/icons/search_icon.svg" alt=" " class="h-5 opacity-45">
-                            </button>
-                            <input type="search" placeholder="Search Books"
-                                class="px-3 py-1 flex-1 focus:ring-0 focus:outline-none">
-                        </div>
-                        <div class="bg-white/50 rounded-lg border border-slate-400 overflow-hidden flex items-center">
-                            <button class="pl-3 py-1">
-                                <img src="../images/icons/filter_icons.svg" alt=" " class="h-5 opacity-45">
-                            </button>
-                            <select class="px-3 py-1 flex-1 focus:ring-0 focus:outline-none">
-                                <option value="" selected disabled>Filter</option>
-                                <option value="all">All</option>
-                            </select>
-                        </div>
-                    </aside>
-                </div>
-
                 <!-- Data Table -->
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-4">
                     <aside class="max-w-full overflow-x-auto pb-2 rounded-2xl overflow-hidden">
                         <table class="shadow border border-slate-200 rounded-2xl overflow-hidden w-full text-left">
                             <thead class="bg-slate-100">
                                 <tr>
-                                    <th class="px-4 py-2 text-sm whitespace-nowrap min-w-[40%] font-semibold sticky left-0 bg-slate-100 z-10">
+                                    <th class="px-4 py-2 text-sm whitespace-nowrap min-w-[40%] sticky left-0 z-10">
                                         Book Title
                                     </th>
-                                    <th class="px-4 py-2 text-sm whitespace-nowrap min-w-[20%] font-semibold">
-                                        Author
-                                    </th>
-                                    <th class="px-4 py-2 text-sm whitespace-nowrap min-w-[20%] font-semibold">
-                                        ISBN
-                                    </th>
-                                    <th class="px-4 py-2 text-sm font-semibold">
-                                        QTY
-                                    </th>
-                                    <th class="px-4 py-2 text-sm font-semibold">
-                                        Available
-                                    </th>
-                                    <th class="px-4 py-2 text-sm font-semibold">
-                                        Action
-                                    </th>
+                                    <th class="px-4 py-2 text-sm whitespace-nowrap min-w-[20%]">Book Author</th>
+                                    <th class="px-4 py-2 text-sm whitespace-nowrap min-w-[20%] ">Borrower Name</th>
+                                    <th class="px-4 py-2 text-sm whitespace-nowrap min-w-[10%]">Date Lent</th>
+                                    <th class="px-4 py-2 text-sm whitespace-nowrap min-w-[10%]">Returned Date</th>
+                                    <th class="px-4 py-2 text-sm whitespace-nowrap min-w-[10%]">Status</th>
+                                    <th class="px-4 py-2 text-sm whitespace-nowrap min-w-[10%]">Action</th>
                                 </tr>
                             </thead>
 
-                            <tbody class="bg-white divide-y divide-slate-300">
-                                <tr>
-                                    <td class="px-4 py-2 text-sm whitespace-nowrap min-w-[40%] sticky left-0 bg-white z-10">
-                                        Book 1 title
-                                    </td>
-                                    <td class="px-4 py-2 text-sm whitespace-nowrap min-w-[20%] ">
-                                        John Doe Abu
-                                    </td>
-                                    <td class="px-4 py-2 text-sm whitespace-nowrap min-w-[20%]">
-                                        12334-23-4-23-2311
-                                    </td>
-                                    <td class="px-4 py-2 text-sm ">
-                                        23
-                                    </td>
-                                    <td class="px-4 py-2 text-sm ">
-                                        <img src="../images/icons/check_icon.svg" alt="" class="h-5">
-                                    </td>
-                                    <td class="px-4 py-2 text-sm ">
-                                        <div class="flex items-center gap-1">
-                                            <button class="border-slate-400 border text-xs font-semibold py-1 px-2 rounded-lg">
-                                                View
-                                            </button>
-                                            <button class="bg-blue-500 text-white text-xs font-semibold py-1 px-2 rounded-lg">
-                                                Edit
-                                            </button>
-                                            <button class="bg-red-500 text-white text-xs font-semibold py-1 px-2 rounded-lg">
-                                                Delete
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="px-4 py-2 text-sm whitespace-nowrap min-w-[30%] sticky left-0 bg-white z-10">
-                                        Book 1 title
-                                    </td>
-                                    <td class="px-4 py-2 text-sm ">
-                                        John Doe Abu
-                                    </td>
-                                    <td class="px-4 py-2 text-sm ">
-                                        12334-23-4-23-2311
-                                    </td>
-                                    <td class="px-4 py-2 text-sm ">
-                                        0
-                                    </td>
-                                    <td class="px-4 py-2 text-sm ">
-                                        <img src="../images/icons/times_circle.svg" alt="" class="h-5">
-                                    </td>
-                                    <td class="px-4 py-2 text-sm ">
-                                        <div class="flex items-center gap-1">
-                                            <button class="border-slate-400 border text-xs font-semibold py-1 px-2 rounded-lg">
-                                                View
-                                            </button>
-                                            <button class="bg-blue-500 text-white text-xs font-semibold py-1 px-2 rounded-lg">
-                                                Edit
-                                            </button>
-                                            <button class="bg-red-500 text-white text-xs font-semibold py-1 px-2 rounded-lg">
-                                                Delete
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
+                            <tbody class="bg-white divide-y divide-slate-300" id="borrowed_books_table">
+                                
                             </tbody>
                         </table>
                     </aside>
@@ -184,125 +133,270 @@
 
             <!-- Page Modal Elements Section -->
             <section>
-                <!-- Add Modal -->
-                <div id="add_modal" class="fixed h-screen top-0 left-0 w-full bg-slate-900/50 z-50 hidden justify-center items-center">
+                <!-- Alert Modal -->
+                <div id="alert_modal"
+                    class="fixed h-screen top-0 left-0 w-full bg-slate-900/50 z-50 hidden justify-center items-center">
                     <aside class="max-w-sm w-full p-4 max-h-[80dvh] overflow-y-auto">
-                        <div class="bg-white min-h-32 rounded-md flex flex-col">
-                            <header class="py-2 px-4 shadow flex justify-between items-center">
-                                <strong>
-                                    Add Book
-                                </strong>
-
-                                <button>
-                                    <img src="../images/icons/times_circle.svg" alt="close" class="h-5" />
+                        <div class="bg-white min-h-32 rounded-md flex flex-col py-5">
+                            <div class="" id="alert_status_icon">
+                                <h1 class="text-2xl text-center text-green-500">
+                                    <img src="../images/icons/check_icon.svg" alt="close" class="h-16 mx-auto" />
+                                    <span>
+                                        Success
+                                    </span>
+                                </h1>
+                            </div>
+                            <div class="mt-5 flex justify-center items-center gap-5">
+                                <button type="button" class="bg-blue-500 py-1 px-4 rounded-lg text-white" onclick="closeAlertModal()">
+                                    Okay
                                 </button>
-                            </header>
-                            <form class="px-4 py-4">
-                                <div class="">
-                                    <input type="text" name="book_title" class="border border-gray-300 p-2 focus:outline-none rounded-lg w-full"
-                                        placeholder="Book Title" required>
-                                </div>
-                                <div class="mt-4">
-                                    <input type="text" name="author" class="border border-gray-300 p-2 focus:outline-none rounded-lg w-full"
-                                        placeholder="Book Author" required>
-                                </div>
-                            </form>
-                        </div>
-                    </aside>
-                </div>
-
-                
-                <!-- Edit Modal -->
-                <div id="edit_modal" class="fixed h-screen top-0 left-0 w-full bg-slate-900/50 z-50 hidden justify-center items-center">
-                    <aside class="max-w-sm w-full p-4 max-h-[80dvh] overflow-y-auto">
-                        <div class="bg-white min-h-32 rounded-md flex flex-col">
-                            <header class="py-2 px-4 shadow flex justify-between items-center">
-                                <strong>
-                                    Edit Book
-                                </strong>
-
-                                <button>
-                                    <img src="../images/icons/times_circle.svg" alt="close" class="h-5" />
-                                </button>
-                            </header>
-                            <form class="px-4 py-4">
-                                <div class="">
-                                    <input type="text" name="book_title" class="border border-gray-300 p-2 focus:outline-none rounded-lg w-full"
-                                        placeholder="Book Title" required>
-                                </div>
-                                <div class="mt-4">
-                                    <input type="text" name="author" class="border border-gray-300 p-2 focus:outline-none rounded-lg w-full"
-                                        placeholder="Book Author" required>
-                                </div>
-                            </form>
-                        </div>
-                    </aside>
-                </div>
-
-                
-                <!-- View Modal -->
-                <div id="view_modal" class="fixed h-screen top-0 left-0 w-full bg-slate-900/50 z-50 hidden justify-center items-center">
-                    <aside class="max-w-sm w-full p-4 max-h-[80dvh] overflow-y-auto">
-                        <div class="bg-white min-h-32 rounded-md flex flex-col">
-                            <header class="py-2 px-4 shadow flex justify-between items-center">
-                                <strong>
-                                    Book Details
-                                </strong>
-
-                                <button>
-                                    <img src="../images/icons/times_circle.svg" alt="close" class="h-5" />
-                                </button>
-                            </header>
-                            <form class="px-4 py-4">
-                                <div class="">
-                                    <input type="text" name="book_title" class="border border-gray-300 p-2 focus:outline-none rounded-lg w-full"
-                                        placeholder="Book Title" required>
-                                </div>
-                                <div class="mt-4">
-                                    <input type="text" name="author" class="border border-gray-300 p-2 focus:outline-none rounded-lg w-full"
-                                        placeholder="Book Author" required>
-                                </div>
-                            </form>
-                        </div>
-                    </aside>
-                </div>
-
-                
-                <!-- Delete Modal -->
-                <div id="delete_modal" class="fixed h-screen top-0 left-0 w-full bg-slate-900/50 z-50 hidden justify-center items-center">
-                    <aside class="max-w-sm w-full p-4 max-h-[80dvh] overflow-y-auto">
-                        <div class="bg-white min-h-32 rounded-md flex flex-col">
-                            <form class="px-4 py-4">
-                                <div class="">
-                                    <input type="hidden" name="book_id" required>
-                                </div>
-                                
-                                <div class="">
-                                    <h1 class="text-2xl text-center text-red-500">
-                                        <img src="../images/icons/trash_alt.svg" alt="close" class="h-16 mx-auto" />
-                                        <span>
-                                            Confirm Delete
-                                        </span>
-                                    </h1>
-                                    <p class="text-lg font-semibold text-center">
-                                        Are you sure you want to delete this record?
-                                    </p>
-                                </div>
-                                <div class="mt-5 flex justify-center items-center gap-5">
-                                    <button type="button" class="bg-blue-500 py-1 px-4 rounded-lg text-white">
-                                        Cancel
-                                    </button>
-                                    <button type="submit" class="bg-red-500 py-1 px-4 rounded-lg text-white">
-                                        Delete
-                                    </button>
-                                </div>
-                            </form>
+                            </div>
                         </div>
                     </aside>
                 </div>
             </section>
         </main>
     </div>
+
+    <script>
+        const fetchBorrowedBooks = () => {
+            fetch(`../backend/admin/borrowed_books.php`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': localStorage.getItem('token')
+                }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        displayBorrowedBooks(data.books);
+                    }
+                })
+        }
+        fetchBorrowedBooks();
+
+        const displayBorrowedBooks = (data) => {
+            let table = document.getElementById('borrowed_books_table');
+            let tableEl = '';
+            if (data.length > 0) {
+                data.forEach((item, index) => {
+                    tableEl += `<tr>
+                        <td class="px-4 py-2">
+                            <div class="flex items-center gap-1">
+                                <img src="${item.cover_image || '../images/icons/book.svg'}" alt="book" class="h-10 w-10 rounded-lg">
+                                <span class="text-sm font-semibold">${item.title}</span>
+                            </div>
+                        </td>
+                        <td class="px-4 py-2">${item.author}</td>
+                        <td class="px-4 py-2">${item.fullname}</td>
+                        <td class="px-4 py-2">${moment(item.borrow_date).format('LL')}</td>
+                        <td class="px-4 py-2">
+                            <div class="flex flex-col">
+                                <span>${item.return_date ? moment(item.return_date).format('LL') : 'Not Yet Returned'}</span>
+                                <div class="flex items-center gap-1 text-[10px] font-semibold mt-1">
+                                    <span class="block ${item.overdue == true ? 'bg-red-500' : 'bg-green-500'} text-white px-2 rounded-full flex-shrink-0">
+                                        <span class="">${item.overdue == true ? 'Overdue' : 'Not Overdue'}</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-4 py-2">
+                            <span class="text-sm font-semibold capitalize flex items-center gap-1 ${item.status == 'pending' ? 'text-yellow-500' : item.status == 'approved' ? 'text-green-500' : 'text-red-500'}">
+                                ${item.status == 'approved' ? `<img src="../images/icons/check_icon.svg" alt="" class="h-5">` : item.status == 'pending' ? `<img src="../images/icons/clock.svg" alt="" class="h-5">` : `<img src="../images/icons/times_circle.svg" alt="" class="h-5">`}
+                                ${item.status}
+                            </span>
+                        </td>
+                        <td class="px-4 py-2">
+                            <div class="flex items-center gap-1">
+                                <button onclick="approveBorrow(${item.borrow_id})"
+                                    class="bg-green-500 text-white text-xs font-semibold py-1 px-2 rounded-lg ${item.status == 'pending' ? 'inline-block' : 'hidden'}">
+                                    Approve
+                                </button>
+                                <button onclick="returnBook(${item.borrow_id})"
+                                    class="bg-blue-500 text-white text-xs font-semibold py-1 px-2 rounded-lg">
+                                    Return
+                                </button>
+                            </div>
+                        </td>
+                    </tr>`;
+                });
+                table.innerHTML = tableEl;
+            } else {
+                tableEl = `<tr>
+                    <td colspan="8" class="text-center py-4">No borrowed books found.</td>
+                </tr>`;
+                table.innerHTML = tableEl;
+            }
+        }
+
+
+        const searchUser = (event) => {
+            event.preventDefault();
+            let search = event.target.value;
+            fetch(`../backend/admin/search_user.php?search=${search}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': localStorage.getItem('token')
+                }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        displayUserDataOnList(data.users, 'userSearchResults', 'userSearch');
+                    }
+                })
+        }
+
+        const displayUserDataOnList = (data, listId, inputId) => {
+            if (data.length > 0) {
+                let list = document.getElementById(listId);
+                listEl = '';
+                data.forEach((item, index) => {
+                    listEl += `<li class="px-3 py-1 hover:bg-slate-200 cursor-pointer" onclick="selectUser('${item.id}', '${item.fullname}', '${inputId}', '${listId}');">
+                            ${item.fullname}
+                        </li>`;
+                });
+                list.innerHTML = listEl;
+                list.classList.remove('hidden');
+            }
+        }
+
+        const selectUser = (id, name, inputId, listId) => {
+            document.getElementById('user_id').value = id;
+            document.getElementById(inputId).value = name;
+            document.getElementById(listId).classList.add('hidden');
+        }
+
+        const searchBook = (event) => {
+            event.preventDefault();
+            let search = event.target.value;
+            fetch(`../backend/admin/search_books.php?search=${search}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': localStorage.getItem('token')
+                }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        displayBookDataOnList(data.books, 'bookSearchResults', 'bookSearch');
+                    }
+                })
+        }
+
+        const displayBookDataOnList = (data, listId, inputId) => {
+            let list = document.getElementById(listId);
+            if (data.length > 0) {
+                listEl = '';
+                data.forEach((item, index) => {
+                    listEl += `<li class="px-3 py-1 hover:bg-slate-200 cursor-pointer" onclick="selectBook('${item.id}', '${item.title}', '${inputId}', '${listId}');">
+                                ${item.title}
+                            </li>`;
+                });
+                list.innerHTML = listEl;
+                list.classList.remove('hidden');
+            }
+        }
+
+        const selectBook = (id, title, inputId, listId) => {
+            document.getElementById('book_id').value = id;
+            document.getElementById(inputId).value = title;
+            document.getElementById(listId).classList.add('hidden');
+        }
+
+        const lendBook = (event) => {
+            event.preventDefault();
+            fetch(`../backend/admin/lend_book.php`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': localStorage.getItem('token')
+                },
+                body: new FormData(event.target)
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        event.target.reset();
+                        window.location.reload();
+                    }else{
+                        displayAlertModal('error', data.message);
+                    }
+                })
+        }
+
+        const returnBook = (borrow_id) => {
+            let data = new FormData();
+            data.append('borrow_id', borrow_id);
+            fetch(`../backend/admin/return_book.php`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': localStorage.getItem('token')
+                },
+                body: data
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        window.location.reload();
+                    }else{
+                        displayAlertModal('error', data.message);
+                    }
+                })
+        }
+
+        const approveBorrow = (borrow_id) => {
+            let data = new FormData();
+            data.append('borrow_id', borrow_id);
+            fetch(`../backend/admin/approve_lending.php`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': localStorage.getItem('token')
+                },
+                body: data
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        window.location.reload();
+                    }else{
+                        displayAlertModal('error', data.message);
+                    }
+                })
+        }
+
+        const displayAlertModal = (type = 'error', message = 'An unexpected error occured.') => {
+            let iconEl;
+            if (type == 'success') {
+                iconEl = `<h1 class="text-2xl text-center text-green-500">
+                                    <img src="../images/icons/check_icon.svg" alt="close" class="h-16 mx-auto" />
+                                    <span>
+                                        Success
+                                    </span>
+                                </h1>
+                                <p class="text-base font-semibold text-center">${message}</p>`;
+            }else{
+                iconEl = `<h1 class="text-2xl text-center text-red-500">
+                                    <img src="../images/icons/times_circle.svg" alt="close" class="h-16 mx-auto" />
+                                    <span>
+                                        Error
+                                    </span>
+                                </h1>
+                                <p class="text-base font-semibold text-center">${message}</p>`;
+            }
+
+            document.getElementById('alert_status_icon').innerHTML = iconEl;
+            const modal = document.getElementById('alert_modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        const closeAlertModal = () => {
+            const modal = document.getElementById('alert_modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+    </script>
 </body>
 
 </html>

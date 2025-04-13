@@ -27,8 +27,9 @@
                             class="text-slate-700 font-semibold py-2 px-4 rounded-lg text-sm">Manage Users</a>
                         <a href="manage_books.html"
                             class="border-y text-slate-700 font-semibold py-2 px-4 rounded-lg text-sm">Manage Books</a>
-                        <a href="#" class=" text-slate-700 font-semibold py-2 px-4 rounded-lg text-sm">
-                            <img src="../images/icons/bell.svg" alt="bell" class="h-5">
+                        <a href="borrow_settings.html"
+                            class=" text-slate-700 font-semibold py-2 px-4 rounded-lg text-sm">
+                            <img src="../images/icons/settings.svg" alt="settings" class="h-5">
                         </a>
                         <a href="#" class=" text-slate-700 font-semibold py-2 px-4 rounded-lg text-sm">
                             <img src="../images/icons/user.svg" alt="bell"
@@ -88,7 +89,8 @@
                             <button class="pl-3 py-1">
                                 <img src="../images/icons/filter_icons.svg" alt=" " class="h-5 opacity-45">
                             </button>
-                            <select class="px-3 py-1 flex-1 focus:ring-0 focus:outline-none" id="filter"  onchange="searchBook()">
+                            <select class="px-3 py-1 flex-1 focus:ring-0 focus:outline-none" id="filter"
+                                onchange="searchBook()">
                                 <option value="" selected disabled>Filter</option>
                                 <option value="">All</option>
                             </select>
@@ -277,7 +279,7 @@
                                     Book Details
                                 </strong>
 
-                                <button onclick="toggleModal('hide', 'view_modal')" >
+                                <button onclick="toggleModal('hide', 'view_modal')">
                                     <img src="../images/icons/times_circle.svg" alt="close" class="h-5" />
                                 </button>
                             </header>
@@ -576,7 +578,7 @@
                 })
         }
 
-        
+
         const viewBook = (book_id, title, author, publication_year, isbn, genre, available_copies, total_copies, cover_image) => {
             document.getElementById('view_title').innerText = title;
             document.getElementById('view_author').innerText = author;
@@ -588,7 +590,7 @@
             document.getElementById('view_cover_image').src = cover_image;
             toggleModal('show', 'view_modal');
         }
-        
+
 
     </script>
 </body>

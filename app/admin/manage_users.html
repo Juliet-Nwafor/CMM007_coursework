@@ -26,8 +26,9 @@
                             class="border-y text-slate-700 font-semibold py-2 px-4 rounded-lg text-sm">Manage Users</a>
                         <a href="manage_books.html"
                             class=" text-slate-700 font-semibold py-2 px-4 rounded-lg text-sm">Manage Books</a>
-                        <a href="#" class=" text-slate-700 font-semibold py-2 px-4 rounded-lg text-sm">
-                            <img src="../images/icons/bell.svg" alt="bell" class="h-5">
+                        <a href="borrow_settings.html"
+                            class=" text-slate-700 font-semibold py-2 px-4 rounded-lg text-sm">
+                            <img src="../images/icons/settings.svg" alt="settings" class="h-5">
                         </a>
                         <a href="#" class=" text-slate-700 font-semibold py-2 px-4 rounded-lg text-sm">
                             <img src="../images/icons/user.svg" alt="bell"
@@ -79,7 +80,8 @@
                             <button class="pl-3 py-1">
                                 <img src="../images/icons/filter_icons.svg" alt=" " class="h-5 opacity-45">
                             </button>
-                            <select class="px-3 py-1 flex-1 focus:ring-0 focus:outline-none" id="filter" onchange="searchUser()">
+                            <select class="px-3 py-1 flex-1 focus:ring-0 focus:outline-none" id="filter"
+                                onchange="searchUser()">
                                 <option value="" selected disabled>Filter</option>
                                 <option value="all">All</option>
                                 <option value="user">User</option>
@@ -448,9 +450,9 @@
             searchValue = document.getElementById('search').value;
             filterBy = document.getElementById('filter').value;
 
-            fetch(`../backend/admin/search_user.php?search=${searchValue}&filter=${filterBy}`,{
+            fetch(`../backend/admin/search_user.php?search=${searchValue}&filter=${filterBy}`, {
                 method: 'GET',
-                headers:{
+                headers: {
                     'Authorization': localStorage.getItem('token')
                 }
             })
