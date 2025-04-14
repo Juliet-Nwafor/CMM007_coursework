@@ -60,14 +60,14 @@ if ($book_borrows['no_of_borrows'] > 0) {
 
 $sql = "UPDATE borrowed_books SET status = 'approved' WHERE id = $borrow_id";
 if ($conn->query($sql) === TRUE) {
-    $sql = "UPDATE books SET available_copies = available_copies - 1 WHERE id = $book_id";
-    if ($conn->query($sql) === TRUE) {
+    // $sql = "UPDATE books SET available_copies = available_copies - 1 WHERE id = $book_id";
+    // if ($conn->query($sql) === TRUE) {
         header('HTTP/1.1 200 OK');
         echo json_encode(['success' => true, 'message' => 'Book lent successfully.']);
-    } else {
-        header('HTTP/1.1 500 Internal Server Error');
-        echo json_encode(['success' => false, 'message' => 'Error lending book: ' . $conn->error]);
-    }
+    // } else {
+    //     header('HTTP/1.1 500 Internal Server Error');
+    //     echo json_encode(['success' => false, 'message' => 'Error lending book: ' . $conn->error]);
+    // }
 } else {
     header('HTTP/1.1 500 Internal Server Error');
     echo json_encode(['success' => false, 'message' => 'Error lending book: ' . $conn->error]);

@@ -80,7 +80,7 @@ $sql = "CREATE TABLE IF NOT EXISTS borrowed_books (
     user_id INT(6) UNSIGNED NOT NULL,
     borrow_date DATE NOT NULL,
     return_date DATE NOT NULL,
-    status ENUM('pending', 'approved', 'declined') NOT NULL DEFAULT 'pending',
+    status ENUM('pending', 'returned', 'approved', 'declined') NOT NULL DEFAULT 'pending',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (book_id) REFERENCES books(id),
     FOREIGN KEY (user_id) REFERENCES users(id)
@@ -95,7 +95,7 @@ $sql = "CREATE TABLE IF NOT EXISTS borrow_settings (
     id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     borrow_duration INT(4) NOT NULL DEFAULT 7,
     fine_per_day INT(4) NOT NULL DEFAULT 1,
-    max_borrow_limit INT(4) NOT NULL,
+    max_borrow_limit INT(4) NOT NULL
 )";
 
 if ($conn->query($sql) !== TRUE) {
